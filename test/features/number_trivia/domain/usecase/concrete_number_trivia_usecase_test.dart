@@ -25,7 +25,7 @@ void main() {
         (_) async => const Right(excepted)
       );
 
-      final result = await usecase.execute(tNumber);
+      final result = await usecase(tNumber);
       expect(result, const Right(excepted));
       // Verify that the method has been called on the Repository
       verify(mockRepo.getConcreteNumberTrivia(tNumber));

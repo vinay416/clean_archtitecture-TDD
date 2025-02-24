@@ -7,7 +7,7 @@ class GetRandomNumberTrivia {
   final NumberTriviaRepository repo;
   GetRandomNumberTrivia(this.repo);
 
-  Future<Either<Failure, NumberTrivaEntity>> execute () async {
+  Future<Either<Failure, NumberTrivaEntity>> call () async {
     return await repo.getRandomNumberTrivia();
   }
 }
