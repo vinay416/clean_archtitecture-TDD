@@ -12,4 +12,11 @@ class NumberTriviaModel extends NumberTrivaEntity {
       number: (json["number"] as num).toInt(),
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "text": text,
+      "number": number,
+    };
+  }
 }

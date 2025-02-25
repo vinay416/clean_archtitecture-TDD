@@ -42,7 +42,7 @@ void main() {
       test(
         "Trivia model to Map",
         () {
-          final triviaMap = NumberTriviaModel.toMap(testTrivia);
+          final triviaMap = testTrivia.toMap();
           final expected = {
             "text": "Test Trivia 1",
             "number": 1,
