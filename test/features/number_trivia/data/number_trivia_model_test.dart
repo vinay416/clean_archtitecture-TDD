@@ -23,7 +23,17 @@ void main() {
         "Trivia model from json",
         () {
           final stringTrivia = Fixtures().call("trivia.json");
-          final Map<String,dynamic> decoded = jsonDecode(stringTrivia);
+          final Map<String, dynamic> decoded = jsonDecode(stringTrivia);
+          final trivia = NumberTriviaModel.fromJson(decoded);
+          expect(trivia, testTrivia);
+        },
+      );
+
+      test(
+        "Trivia model from json with double value",
+        () {
+          final stringTrivia = Fixtures().call("trivia_double.json");
+          final Map<String, dynamic> decoded = jsonDecode(stringTrivia);
           final trivia = NumberTriviaModel.fromJson(decoded);
           expect(trivia, testTrivia);
         },

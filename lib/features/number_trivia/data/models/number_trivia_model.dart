@@ -5,4 +5,11 @@ class NumberTriviaModel extends NumberTrivaEntity {
     required super.text,
     required super.number,
   });
+
+  factory NumberTriviaModel.fromJson(Map<String, dynamic> json) {
+    return NumberTriviaModel(
+      text: json["text"] as String,
+      number: json["number"] as int,
+    );
+  }
 }
