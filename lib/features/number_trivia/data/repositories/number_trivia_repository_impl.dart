@@ -21,12 +21,12 @@ class NumberTriviaRepositoryImpl implements NumberTriviaRepository {
     int number,
   ) async {
     networkInfo.isConnected();
-    // try {
+    try {
       final trivia = await remoteDataSource.getConcreteNumberTrivia(number);
       return Right(trivia);
-    // } catch (e) {
+    } catch (e) {
       return Left(ServerFailure());
-    // }
+    }
   }
 
   @override
