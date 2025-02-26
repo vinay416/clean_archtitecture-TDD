@@ -3,7 +3,7 @@ import 'package:clean_architecture/features/number_trivia/data/models/number_tri
 import 'package:clean_architecture/features/number_trivia/domain/entities/number_triva_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../fixtures/fixtures.dart';
+import '../../../../fixtures/fixtures.dart';
 
 void main() {
   const testTrivia = NumberTriviaModel(text: "Test Trivia 1", number: 1);
