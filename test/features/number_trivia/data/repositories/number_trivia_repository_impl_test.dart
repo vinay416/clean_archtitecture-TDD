@@ -34,7 +34,7 @@ void main() {
   );
 
   group(
-    "Get Remote Data Source Test",
+    "Get Remote Data Source Test when Device online",
     () {
       setUp(
         () {
@@ -42,16 +42,16 @@ void main() {
         },
       );
       const tNumber = 1;
-      const remoteData =
+      const triviaData =
           NumberTriviaModel(text: "Test trivia", number: tNumber);
       test(
         "Device is online and API call success",
         () async {
           when(mockRemoteDataSource.getConcreteNumberTrivia(any))
-              .thenAnswer((_) => Future.value(remoteData));
+              .thenAnswer((_) => Future.value(triviaData));
           final result = await triviaRepoImpl.getConcreteNumberTrivia(tNumber);
           verify(mockRemoteDataSource.getConcreteNumberTrivia(tNumber));
-          expect(result, const Right(remoteData));
+          expect(result, const Right(triviaData));
         },
       );
 
@@ -63,6 +63,32 @@ void main() {
           final result = await triviaRepoImpl.getConcreteNumberTrivia(tNumber);
           verify(mockRemoteDataSource.getConcreteNumberTrivia(tNumber));
           expect(result, Left(ServerFailure()));
+        },
+      );
+    },
+  );
+
+  group(
+    "Get Loca Data Source when device  offline Test",
+    () {
+      setUp(
+        () {
+          when(mockNetworkInfo.isConnected()).thenAnswer((_) async => false);
+        },
+      );
+      const tNumber = 1;
+      const triviaData =
+          NumberTriviaModel(text: "Test trivia", number: tNumber);
+
+      test(
+        "Device is offline, get Local data Success",
+        () async {
+          when(mockLocalDataSource.getCachedNumberTrivia())
+              .thenThrow((_) => Future.value(triviaData));
+          final result = await triviaRepoImpl.getConcreteNumberTrivia(tNumber);
+          verify(mockLocalDataSource.getCachedNumberTrivia());
+          verifyZeroInteractions(mockRemoteDataSource.getConcreteNumberTrivia(tNumber));
+          expect(result, const Right(triviaData));
         },
       );
     },

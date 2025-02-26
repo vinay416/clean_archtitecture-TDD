@@ -63,14 +63,21 @@ class MockTestNumberTriviaLocalSource extends _i1.Mock
   }
 
   @override
-  _i4.Future<_i2.NumberTriviaModel?> getCachedNumberTrivia() =>
+  _i4.Future<_i2.NumberTriviaModel> getCachedNumberTrivia() =>
       (super.noSuchMethod(
         Invocation.method(
           #getCachedNumberTrivia,
           [],
         ),
-        returnValue: _i4.Future<_i2.NumberTriviaModel?>.value(),
-      ) as _i4.Future<_i2.NumberTriviaModel?>);
+        returnValue:
+            _i4.Future<_i2.NumberTriviaModel>.value(_FakeNumberTriviaModel_0(
+          this,
+          Invocation.method(
+            #getCachedNumberTrivia,
+            [],
+          ),
+        )),
+      ) as _i4.Future<_i2.NumberTriviaModel>);
 
   @override
   _i4.Future<bool> cacheNumberTrivia(_i2.NumberTriviaModel? trivia) =>
