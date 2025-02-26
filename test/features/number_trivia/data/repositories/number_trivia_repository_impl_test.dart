@@ -69,25 +69,26 @@ void main() {
   );
 
   group(
-    "Get Loca Data Source when device  offline Test",
+    "Get Local Data Source when device offline Test",
     () {
+      const tNumber = 1;
+      const triviaData =
+          NumberTriviaModel(text: "Test trivia", number: tNumber);
+
       setUp(
         () {
           when(mockNetworkInfo.isConnected()).thenAnswer((_) async => false);
         },
       );
-      const tNumber = 1;
-      const triviaData =
-          NumberTriviaModel(text: "Test trivia", number: tNumber);
 
       test(
         "Device is offline, get Local data Success",
         () async {
           when(mockLocalDataSource.getCachedNumberTrivia())
-              .thenThrow((_) => Future.value(triviaData));
+              .thenAnswer((_) => Future.value(triviaData));
           final result = await triviaRepoImpl.getConcreteNumberTrivia(tNumber);
           verify(mockLocalDataSource.getCachedNumberTrivia());
-          verifyZeroInteractions(mockRemoteDataSource.getConcreteNumberTrivia(tNumber));
+          verifyZeroInteractions(mockRemoteDataSource);
           expect(result, const Right(triviaData));
         },
       );
