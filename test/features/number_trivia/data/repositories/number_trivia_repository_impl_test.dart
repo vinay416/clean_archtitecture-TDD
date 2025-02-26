@@ -78,6 +78,7 @@ void main() {
       setUp(
         () {
           when(mockNetworkInfo.isConnected()).thenAnswer((_) async => false);
+          reset(mockRemoteDataSource);
         },
       );
 

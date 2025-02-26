@@ -27,9 +27,13 @@ class NumberTriviaRepositoryImpl implements NumberTriviaRepository {
       } catch (e) {
         return Left(ServerFailure());
       }
-    }else{
-      final localTrivia = await localDataSource.getCachedNumberTrivia();
-      return Right(localTrivia);
+    } else {
+      try {
+        final localTrivia = await localDataSource.getCachedNumberTrivia();
+        return Right(localTrivia);
+      } catch (e) {
+        return Left(CacheFailure());
+      }
     }
   }
 
