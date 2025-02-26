@@ -56,7 +56,7 @@ void main() {
       );
 
       test(
-        "Device is online and API call failed",
+        "Device is online and API call failed throw Server Eception",
         () async {
           when(mockRemoteDataSource.getConcreteNumberTrivia(any))
               .thenThrow((_) => (ServerException()));
