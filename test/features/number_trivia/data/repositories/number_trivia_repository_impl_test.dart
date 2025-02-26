@@ -92,6 +92,18 @@ void main() {
           expect(result, const Right(triviaData));
         },
       );
+
+      test(
+        "Device is offline, get Local data failed throw Exception",
+        () async {
+          when(mockLocalDataSource.getCachedNumberTrivia())
+              .thenThrow((_) => CacheException());
+          final result = await triviaRepoImpl.getConcreteNumberTrivia(tNumber);
+          verify(mockLocalDataSource.getCachedNumberTrivia());
+          verifyZeroInteractions(mockRemoteDataSource);
+          expect(result, Left(CacheFailure()));
+        },
+      );
     },
   );
 }
