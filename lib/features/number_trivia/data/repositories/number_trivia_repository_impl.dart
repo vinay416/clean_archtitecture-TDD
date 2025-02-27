@@ -28,12 +28,7 @@ class NumberTriviaRepositoryImpl implements NumberTriviaRepository {
         return Left(ServerFailure());
       }
     } else {
-      try {
-        final localTrivia = await localDataSource.getCachedNumberTrivia();
-        return Right(localTrivia);
-      } catch (e) {
-        return Left(CacheFailure());
-      }
+      return _getChachedTrivia();
     }
   }
 
@@ -47,12 +42,16 @@ class NumberTriviaRepositoryImpl implements NumberTriviaRepository {
         return Left(ServerFailure());
       }
     } else {
-      try {
-        final localTrivia = await localDataSource.getCachedNumberTrivia();
-        return Right(localTrivia);
-      } catch (e) {
-        return Left(CacheFailure());
-      }
+      return _getChachedTrivia();
+    }
+  }
+
+  Future<Either<Failure, NumberTrivaEntity>> _getChachedTrivia() async {
+    try {
+      final localTrivia = await localDataSource.getCachedNumberTrivia();
+      return Right(localTrivia);
+    } catch (e) {
+      return Left(CacheFailure());
     }
   }
 }
