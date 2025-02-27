@@ -40,6 +40,11 @@ class NumberTriviaRepositoryImpl implements NumberTriviaRepository {
   @override
   Future<Either<Failure, NumberTrivaEntity>> getRandomNumberTrivia() async {
     networkInfo.isConnected();
-    return Left(ServerFailure());
+    try {
+      final trivia = await remoteDataSource.getRandomNumberTrivia();
+      return Right(trivia);
+    } catch (e) {
+      return Left(ServerFailure());
+    }
   }
 }

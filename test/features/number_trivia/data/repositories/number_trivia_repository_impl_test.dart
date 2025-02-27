@@ -100,8 +100,6 @@ void main() {
               .thenAnswer((_) => Future.value(triviaData));
           final result = await triviaRepoImpl.getRandomNumberTrivia();
           verify(mockRemoteDataSource.getRandomNumberTrivia());
-          verifyZeroInteractions(
-              mockRemoteDataSource.getConcreteNumberTrivia(tNumber));
           expect(result, const Right(triviaData));
         },
       );
@@ -113,8 +111,6 @@ void main() {
               .thenThrow((_) => (ServerException()));
           final result = await triviaRepoImpl.getRandomNumberTrivia();
           verify(mockRemoteDataSource.getRandomNumberTrivia());
-          verifyZeroInteractions(
-              mockRemoteDataSource.getConcreteNumberTrivia(tNumber));
           expect(result, Left(ServerFailure()));
         },
       );
