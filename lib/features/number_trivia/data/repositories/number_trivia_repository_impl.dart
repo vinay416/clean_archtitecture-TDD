@@ -38,8 +38,8 @@ class NumberTriviaRepositoryImpl implements NumberTriviaRepository {
   }
 
   @override
-  Future<Either<Failure, NumberTrivaEntity>> getRandomNumberTrivia() {
-    // TODO: implement getRandomNumberTrivia
-    throw UnimplementedError();
+  Future<Either<Failure, NumberTrivaEntity>> getRandomNumberTrivia() async {
+    networkInfo.isConnected();
+    return Left(ServerFailure());
   }
 }
