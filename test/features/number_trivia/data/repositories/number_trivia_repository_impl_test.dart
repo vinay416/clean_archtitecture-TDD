@@ -19,14 +19,26 @@ void main() {
   );
 
   group(
-    "mockNetworkInfo Test",
+    "Network Connected Test",
     () {
-      const tNumber = 1;
-      test(
-        "Network Connected",
+      setUp(
         () {
           when(mockNetworkInfo.isConnected()).thenAnswer((_) async => true);
+        },
+      );
+      const tNumber = 1;
+      test(
+        "getConcreteNumberTrivia",
+        () {
           triviaRepoImpl.getConcreteNumberTrivia(tNumber);
+          verify(mockNetworkInfo.isConnected());
+        },
+      );
+
+      test(
+        "getRandomNumberTrivia",
+        () {
+          triviaRepoImpl.getRandomNumberTrivia();
           verify(mockNetworkInfo.isConnected());
         },
       );
