@@ -32,6 +32,7 @@ void main() {
         () {
           triviaRepoImpl.getConcreteNumberTrivia(tNumber);
           verify(mockNetworkInfo.isConnected());
+          verifyNoMoreInteractions(mockNetworkInfo);
         },
       );
 
@@ -40,6 +41,7 @@ void main() {
         () {
           triviaRepoImpl.getRandomNumberTrivia();
           verify(mockNetworkInfo.isConnected());
+          verifyNoMoreInteractions(mockNetworkInfo);
         },
       );
     },
