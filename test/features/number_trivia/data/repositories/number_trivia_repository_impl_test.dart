@@ -118,7 +118,7 @@ void main() {
   );
 
   group(
-    "Get Local Data Source when device offline Test",
+    "getConcreteNumberTrivia Local Data Source when device offline Test",
     () {
       const tNumber = 1;
       const triviaData =
@@ -149,6 +149,46 @@ void main() {
           when(mockLocalDataSource.getCachedNumberTrivia())
               .thenThrow((_) => CacheException());
           final result = await triviaRepoImpl.getConcreteNumberTrivia(tNumber);
+          verify(mockLocalDataSource.getCachedNumberTrivia());
+          verifyZeroInteractions(mockRemoteDataSource);
+          expect(result, Left(CacheFailure()));
+        },
+      );
+    },
+  );
+
+  group(
+    "getRandomNumberTrivia Local Data Source when device offline Test",
+    () {
+      const tNumber = 1;
+      const triviaData =
+          NumberTriviaModel(text: "Test trivia", number: tNumber);
+
+      setUp(
+        () {
+          when(mockNetworkInfo.isConnected()).thenAnswer((_) async => false);
+          reset(mockRemoteDataSource);
+        },
+      );
+
+      test(
+        "Device is offline, get Local data Success",
+        () async {
+          when(mockLocalDataSource.getCachedNumberTrivia())
+              .thenAnswer((_) => Future.value(triviaData));
+          final result = await triviaRepoImpl.getRandomNumberTrivia();
+          verify(mockLocalDataSource.getCachedNumberTrivia());
+          verifyZeroInteractions(mockRemoteDataSource);
+          expect(result, const Right(triviaData));
+        },
+      );
+
+      test(
+        "Device is offline, get Local data failed throw Exception",
+        () async {
+          when(mockLocalDataSource.getCachedNumberTrivia())
+              .thenThrow((_) => CacheException());
+          final result = await triviaRepoImpl.getRandomNumberTrivia();
           verify(mockLocalDataSource.getCachedNumberTrivia());
           verifyZeroInteractions(mockRemoteDataSource);
           expect(result, Left(CacheFailure()));
