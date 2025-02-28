@@ -35,9 +35,24 @@ void main() {
         () async {
           when(mockPrefes.getString(any)).thenReturn(null);
 
-          final result =  localSource.getCachedNumberTrivia();
+          final result = localSource.getCachedNumberTrivia();
           verify(mockPrefes.getString(NUMBER_TRIVIA_PREFS_KEY));
           expect(() => result, throwsA(const TypeMatcher<CacheException>()));
+        },
+      );
+
+      test(
+        "Get Cache Trivia - when get remote trivia",
+        () async {
+          when(mockPrefes.setString(NUMBER_TRIVIA_PREFS_KEY, any))
+              .thenAnswer((_) => Future.value(true));
+
+          final result = await localSource.cacheNumberTrivia(trivia);
+          verify(mockPrefes.setString(
+            NUMBER_TRIVIA_PREFS_KEY,
+            jsonEncode(trivia.toMap()),
+          ));
+          expect(result, true);
         },
       );
     },
