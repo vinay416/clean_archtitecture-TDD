@@ -6,7 +6,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-import '../data_sources/mock_data_souces.mocks.dart';
+import 'mock_data_souces.mocks.dart';
 
 void main() {
   final mockNetworkInfo = MockTestNetworkInfo();
