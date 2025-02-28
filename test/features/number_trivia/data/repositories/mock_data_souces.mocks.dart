@@ -80,14 +80,15 @@ class MockTestNumberTriviaLocalSource extends _i1.Mock
       ) as _i4.Future<_i2.NumberTriviaModel>);
 
   @override
-  _i4.Future<bool> cacheNumberTrivia(_i2.NumberTriviaModel? trivia) =>
+  _i4.Future<void> cacheNumberTrivia(_i2.NumberTriviaModel? trivia) =>
       (super.noSuchMethod(
         Invocation.method(
           #cacheNumberTrivia,
           [trivia],
         ),
-        returnValue: _i4.Future<bool>.value(false),
-      ) as _i4.Future<bool>);
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 }
 
 /// A class which mocks [TestNumberTriviaRemoteSource].
