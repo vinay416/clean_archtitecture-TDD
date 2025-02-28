@@ -31,13 +31,13 @@ void main() {
       );
 
       test(
-        "Get Trivia - no cached trivia",
+        "Get Trivia - when no cached trivia",
         () async {
-          when(mockPrefes.getString(any)).thenThrow(CacheException());
+          when(mockPrefes.getString(any)).thenReturn(null);
 
-          final result = await localSource.getCachedNumberTrivia();
+          final result =  localSource.getCachedNumberTrivia();
           verify(mockPrefes.getString(NUMBER_TRIVIA_PREFS_KEY));
-          expect(result, CacheException());
+          expect(() => result, throwsA(const TypeMatcher<CacheException>()));
         },
       );
     },

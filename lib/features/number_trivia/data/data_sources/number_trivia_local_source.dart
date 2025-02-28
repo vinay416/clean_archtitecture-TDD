@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:clean_architecture/core/errors/exceptions.dart';
 import 'package:clean_architecture/features/number_trivia/data/models/number_trivia_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,7 +25,7 @@ class NumberTriviaLocalSourceImpl implements NumberTriviaLocalSource {
   @override
   Future<NumberTriviaModel> getCachedNumberTrivia() async {
     final triviaString = preferences.getString(NUMBER_TRIVIA_PREFS_KEY);
-    if (triviaString == null) throw UnimplementedError();
+    if (triviaString == null) throw CacheException();
     return NumberTriviaModel.fromJson(jsonDecode(triviaString));
   }
 }
