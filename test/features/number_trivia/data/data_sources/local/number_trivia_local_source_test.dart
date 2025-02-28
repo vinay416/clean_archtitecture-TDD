@@ -55,6 +55,21 @@ void main() {
           expect(result, true);
         },
       );
+
+      test(
+        "Get Cache Trivia Failed - when get remote trivia",
+        () async {
+          when(mockPrefes.setString(NUMBER_TRIVIA_PREFS_KEY, any))
+              .thenAnswer((_) => Future.value(false));
+
+          final result = await localSource.cacheNumberTrivia(trivia);
+          verify(mockPrefes.setString(
+            NUMBER_TRIVIA_PREFS_KEY,
+            jsonEncode(trivia.toMap()),
+          ));
+          expect(result, false);
+        },
+      );
     },
   );
 }
