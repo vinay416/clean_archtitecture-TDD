@@ -1,3 +1,4 @@
+import 'package:clean_architecture/core/errors/exceptions.dart';
 import 'package:clean_architecture/features/number_trivia/data/models/number_trivia_model.dart';
 import 'package:dio/dio.dart';
 
@@ -9,22 +10,23 @@ abstract class NumberTriviaRemoteSource {
 // ignore: constant_identifier_names
 const CONCRETE_TRIVIA_API = 'numberapi.com/';
 
-class NumberTriviaRemoteSourceImpl implements NumberTriviaRemoteSource{
+class NumberTriviaRemoteSourceImpl implements NumberTriviaRemoteSource {
   const NumberTriviaRemoteSourceImpl(this.dioClient);
   final Dio dioClient;
-  
+
   @override
-  Future<NumberTriviaModel> getConcreteNumberTrivia(int number) async{
+  Future<NumberTriviaModel> getConcreteNumberTrivia(int number) async {
     final url = "$CONCRETE_TRIVIA_API$number";
     final Response response = await dioClient.get(url);
-    return NumberTriviaModel.fromJson(response.data);
-    throw UnimplementedError();
+    if (response.statusCode == 200) {
+      return NumberTriviaModel.fromJson(response.data);
+    }
+    throw ServerException();
   }
-  
+
   @override
   Future<NumberTriviaModel> getRandomNumberTrivia() {
     // TODO: implement getRandomNumberTrivia
     throw UnimplementedError();
   }
-
 }
