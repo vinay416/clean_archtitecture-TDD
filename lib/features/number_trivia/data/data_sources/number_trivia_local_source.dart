@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class NumberTriviaLocalSource {
   Future<NumberTriviaModel> getCachedNumberTrivia();
-  Future<bool> cacheNumberTrivia(NumberTriviaModel trivia);
+  Future<void> cacheNumberTrivia(NumberTriviaModel trivia);
 }
 
 // ignore: constant_identifier_names
@@ -17,11 +17,13 @@ class NumberTriviaLocalSourceImpl implements NumberTriviaLocalSource {
   final SharedPreferences preferences;
 
   @override
-  Future<bool> cacheNumberTrivia(NumberTriviaModel trivia) async {
+  Future<void> cacheNumberTrivia(NumberTriviaModel trivia) async {
     final triviaMapString = jsonEncode(trivia.toMap());
-    final status =
-        await preferences.setString(NUMBER_TRIVIA_PREFS_KEY, triviaMapString);
-    return status;
+    final isCached = await preferences.setString(
+      NUMBER_TRIVIA_PREFS_KEY,
+      triviaMapString,
+    );
+    if(!isCached) throw CacheException();
   }
 
   @override

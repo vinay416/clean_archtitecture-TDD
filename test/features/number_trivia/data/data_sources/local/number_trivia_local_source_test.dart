@@ -47,12 +47,11 @@ void main() {
           when(mockPrefes.setString(NUMBER_TRIVIA_PREFS_KEY, any))
               .thenAnswer((_) => Future.value(true));
 
-          final result = await localSource.cacheNumberTrivia(trivia);
+          await localSource.cacheNumberTrivia(trivia);
           verify(mockPrefes.setString(
             NUMBER_TRIVIA_PREFS_KEY,
             jsonEncode(trivia.toMap()),
           ));
-          expect(result, true);
         },
       );
 
@@ -62,12 +61,12 @@ void main() {
           when(mockPrefes.setString(NUMBER_TRIVIA_PREFS_KEY, any))
               .thenAnswer((_) => Future.value(false));
 
-          final result = await localSource.cacheNumberTrivia(trivia);
+          final call =  localSource.cacheNumberTrivia(trivia);
           verify(mockPrefes.setString(
             NUMBER_TRIVIA_PREFS_KEY,
             jsonEncode(trivia.toMap()),
           ));
-          expect(result, false);
+          expect(()=> call, throwsA(const TypeMatcher<CacheException>()));
         },
       );
     },
