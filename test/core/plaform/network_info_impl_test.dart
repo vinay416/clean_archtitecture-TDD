@@ -14,11 +14,11 @@ void main() {
       test(
         "Network Info Impl - when connected",
         () async {
-          when(dataCheckerMock.checkConnectivity())
+          when(dataCheckerMock.hasConnection)
               .thenAnswer((_) => Future.value(true));
 
           final status = await networkInfo.isConnected();  
-          verify(dataCheckerMock.checkConnectivity());
+          verify(dataCheckerMock.hasConnection);
           expect(status, true);
         },
       );

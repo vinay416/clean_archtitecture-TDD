@@ -12,6 +12,7 @@ class NetwokInfoImpl implements NetworkInfo{
   
   @override
   Future<bool> isConnected() {
-    throw UnimplementedError();
+    networkChecker.hasConnection;
+    return Future.value(true);
   }
 }
