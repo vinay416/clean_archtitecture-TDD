@@ -56,6 +56,44 @@ void main() {
           expect(() async => await result, throwsA(const TypeMatcher<ServerException>()));
         },
       );
+
+
+      test(
+        "Get Random trivia when API success",
+        () async {
+          const url = "$RANDOM_TRIVIA_API$tNumber";
+          when(dioMock.get(any)).thenAnswer((_) => Future.value(Response(
+                data: json.decode(Fixtures().call("trivia.json")),
+                statusCode: 200,
+                requestOptions: RequestOptions(
+                  path: url,
+                  contentType: "application/json",
+                ),
+              )));
+
+          final result = await remoteSource.getConcreteNumberTrivia(tNumber);
+          verify(dioMock.get(url));
+          expect(result, triviaModel);
+        },
+      );
+
+      test(
+        "Get random trivia when API fails, throw Exception",
+        () async {
+          const url = "$CONCRETE_TRIVIA_API$tNumber";
+          when(dioMock.get(any)).thenAnswer((_) => Future.value(Response(
+                statusCode: 500,
+                requestOptions: RequestOptions(
+                  path: url,
+                  contentType: "application/json",
+                ),
+              )));
+
+          final result = remoteSource.getConcreteNumberTrivia(tNumber);
+          verify(dioMock.get(url));
+          expect(() async => await result, throwsA(const TypeMatcher<ServerException>()));
+        },
+      );
     },
   );
 }

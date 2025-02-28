@@ -9,6 +9,8 @@ abstract class NumberTriviaRemoteSource {
 
 // ignore: constant_identifier_names
 const CONCRETE_TRIVIA_API = 'numberapi.com/';
+// ignore: constant_identifier_names
+const RANDOM_TRIVIA_API = 'numberapi.com/random';
 
 class NumberTriviaRemoteSourceImpl implements NumberTriviaRemoteSource {
   const NumberTriviaRemoteSourceImpl(this.dioClient);
