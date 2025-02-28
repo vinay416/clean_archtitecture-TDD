@@ -22,6 +22,18 @@ void main() {
           expect(status, true);
         },
       );
+
+      test(
+        "Network Info Impl - when not connected",
+        () async {
+          when(dataCheckerMock.hasConnection)
+              .thenAnswer((_) => Future.value(false));
+
+          final status = await networkInfo.isConnected();  
+          verify(dataCheckerMock.hasConnection);
+          expect(status, false);
+        },
+      );
     },
   );
 }
