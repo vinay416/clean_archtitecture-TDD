@@ -27,8 +27,8 @@ class NumberTriviaRemoteSourceImpl implements NumberTriviaRemoteSource {
   }
 
   @override
-  Future<NumberTriviaModel> getRandomNumberTrivia() {
-    // TODO: implement getRandomNumberTrivia
-    throw UnimplementedError();
+  Future<NumberTriviaModel> getRandomNumberTrivia() async {
+    final Response response = await dioClient.get(RANDOM_TRIVIA_API);
+    return NumberTriviaModel.fromJson(response.data);
   }
 }

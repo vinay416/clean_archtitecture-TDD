@@ -61,7 +61,7 @@ void main() {
       test(
         "Get Random trivia when API success",
         () async {
-          const url = "$RANDOM_TRIVIA_API$tNumber";
+          const url = RANDOM_TRIVIA_API;
           when(dioMock.get(any)).thenAnswer((_) => Future.value(Response(
                 data: json.decode(Fixtures().call("trivia.json")),
                 statusCode: 200,
@@ -71,7 +71,7 @@ void main() {
                 ),
               )));
 
-          final result = await remoteSource.getConcreteNumberTrivia(tNumber);
+          final result = await remoteSource.getRandomNumberTrivia();
           verify(dioMock.get(url));
           expect(result, triviaModel);
         },
@@ -80,7 +80,7 @@ void main() {
       test(
         "Get random trivia when API fails, throw Exception",
         () async {
-          const url = "$CONCRETE_TRIVIA_API$tNumber";
+          const url = RANDOM_TRIVIA_API;
           when(dioMock.get(any)).thenAnswer((_) => Future.value(Response(
                 statusCode: 500,
                 requestOptions: RequestOptions(
@@ -89,7 +89,7 @@ void main() {
                 ),
               )));
 
-          final result = remoteSource.getConcreteNumberTrivia(tNumber);
+          final result = remoteSource.getRandomNumberTrivia();
           verify(dioMock.get(url));
           expect(() async => await result, throwsA(const TypeMatcher<ServerException>()));
         },
