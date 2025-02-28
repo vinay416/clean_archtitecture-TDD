@@ -23,16 +23,16 @@ void main() {
         "Get concrete trivia when API success",
         () async {
           const url = "$CONCRETE_TRIVIA_API$tNumber";
-          when(
-            dioMock.get(url, options: Options(responseType: ResponseType.json)),
-          ).thenAnswer((_) async => Response(
+          when(dioMock.get(any)).thenAnswer((_) => Future.value(Response(
+                data: json.decode(Fixtures().call("trivia.json")),
                 requestOptions: RequestOptions(
-                    path: url, data: Fixtures().call("trivia.json")),
-              ));
+                  path: url,
+                  contentType: "application/json",
+                ),
+              )));
 
           final result = await remoteSource.getConcreteNumberTrivia(tNumber);
-          verify(dioMock.get(url,
-              options: Options(responseType: ResponseType.json)));
+          verify(dioMock.get(url));
           expect(result, triviaModel);
         },
       );
