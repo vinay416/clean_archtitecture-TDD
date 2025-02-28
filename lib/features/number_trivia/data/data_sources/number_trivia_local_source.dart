@@ -17,9 +17,11 @@ class NumberTriviaLocalSourceImpl implements NumberTriviaLocalSource {
   final SharedPreferences preferences;
 
   @override
-  Future<bool> cacheNumberTrivia(NumberTriviaModel trivia) {
-    // TODO: implement cacheNumberTrivia
-    throw UnimplementedError();
+  Future<bool> cacheNumberTrivia(NumberTriviaModel trivia) async {
+    final triviaMapString = jsonEncode(trivia.toMap());
+    final status =
+        await preferences.setString(NUMBER_TRIVIA_PREFS_KEY, triviaMapString);
+    return status;
   }
 
   @override
