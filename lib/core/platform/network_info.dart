@@ -4,15 +4,14 @@ abstract class NetworkInfo {
   Future<bool> isConnected();
 }
 
-class NetwokInfoImpl implements NetworkInfo{
+class NetwokInfoImpl implements NetworkInfo {
   const NetwokInfoImpl(
     this.networkChecker,
   );
   final InternetConnectionChecker networkChecker;
-  
+
   @override
   Future<bool> isConnected() {
-    networkChecker.hasConnection;
-    return Future.value(true);
+    return networkChecker.hasConnection;
   }
 }
