@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:clean_architecture/core/errors/exceptions.dart';
 import 'package:clean_architecture/features/number_trivia/data/data_sources/number_trivia_local_source.dart';
 import 'package:clean_architecture/features/number_trivia/data/models/number_trivia_model.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -26,6 +27,17 @@ void main() {
           final result = await localSource.getCachedNumberTrivia();
           verify(mockPrefes.getString(NUMBER_TRIVIA_PREFS_KEY));
           expect(result, trivia);
+        },
+      );
+
+      test(
+        "Get Trivia - no cached trivia",
+        () async {
+          when(mockPrefes.getString(any)).thenThrow(CacheException());
+
+          final result = await localSource.getCachedNumberTrivia();
+          verify(mockPrefes.getString(NUMBER_TRIVIA_PREFS_KEY));
+          expect(result, CacheException());
         },
       );
     },
