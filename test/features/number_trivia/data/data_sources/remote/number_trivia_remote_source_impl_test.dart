@@ -91,7 +91,7 @@ void main() {
 
           final result = remoteSource.getRandomNumberTrivia();
           verify(dioMock.get(url));
-          expect(() async => await result, throwsA(const TypeMatcher<ServerException>()));
+          expect(result, throwsA(const TypeMatcher<ServerException>()));
         },
       );
     },
