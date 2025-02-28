@@ -5,9 +5,7 @@ abstract class NetworkInfo {
 }
 
 class NetwokInfoImpl implements NetworkInfo {
-  const NetwokInfoImpl(
-    this.networkChecker,
-  );
+  const NetwokInfoImpl(this.networkChecker);
   final InternetConnectionChecker networkChecker;
 
   @override
