@@ -7,7 +7,9 @@ sealed class NumberTriviaState extends Equatable {
   List<Object> get props => [];
 }
 
-final class NumberTriviaEmptyState extends NumberTriviaState {}
+final class NumberTriviaEmptyState extends NumberTriviaState {
+  const NumberTriviaEmptyState();
+}
 
 final class NumberTriviaLoadingState extends NumberTriviaState {}
 
