@@ -8,6 +8,12 @@ abstract class NumberTriviaParsing {
 class NumberTriviaParsingImpl implements NumberTriviaParsing {
   @override
   Either<Failure, int> toInt(String number) {
+    try {
+      final intNumber = int.parse(number);
+      return Right(intNumber);
+    } catch (e) {
+      
+    }
     throw UnimplementedError();
   }
 }
