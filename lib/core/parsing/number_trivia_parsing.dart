@@ -12,8 +12,7 @@ class NumberTriviaParsingImpl implements NumberTriviaParsing {
       final intNumber = int.parse(number);
       return Right(intNumber);
     } catch (e) {
-      
+      return Left(ParsingFailure());
     }
-    throw UnimplementedError();
   }
 }

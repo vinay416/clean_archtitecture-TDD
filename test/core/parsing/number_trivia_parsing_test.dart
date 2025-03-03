@@ -19,7 +19,7 @@ void main() {
         "Number trivia parsing when error/failed",
         () {
           final result = NumberTriviaParsingImpl().toInt("abc1");
-          expect(result,  Right(ParsingFailure()));
+          expect(result,  Left(ParsingFailure()));
         },
       );
     },
