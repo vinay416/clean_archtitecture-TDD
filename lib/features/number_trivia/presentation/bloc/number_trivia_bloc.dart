@@ -67,7 +67,7 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
     final response = await randomNumberTrivia.call();
     response.fold(
       (failure) => emit(NumberTriviaErrorState(_errorMsg(failure))),
-      (trivia) {},
+      (trivia) => emit(NumberTriviaDataState(trivia)),
     );
   }
 
