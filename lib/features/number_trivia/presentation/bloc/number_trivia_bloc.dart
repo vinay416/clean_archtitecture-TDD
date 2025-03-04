@@ -35,25 +35,34 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
     Emitter<NumberTriviaState> emit,
   ) {
     if (event is ConcreteNumberTriviaEvent) {
-      numberTriviaParsing.toInt(event.number).fold(
-        (failure) {
-          emit(const NumberTriviaErrorState(PARSING_ERROR));
-        },
-        (number) async {
-          emit(NumberTriviaLoadingState());
-          final response = await concreteNumberTrivia.call(number);
-          response.fold(
-            (failure) {
-              if (failure is ServerFailure) {
-                emit(const NumberTriviaErrorState(SERVER_ERROR));
-              } else {
-                emit(const NumberTriviaErrorState(CACHED_ERROR));
-              }
-            },
-            (trivia) => emit(NumberTriviaDataState(trivia)),
-          );
-        },
-      );
+      _onConcreteTriviaEvent(event, emit);
     }
+  }
+
+  void _onConcreteTriviaEvent(
+    ConcreteNumberTriviaEvent event,
+    Emitter<NumberTriviaState> emit,
+  ) {
+    numberTriviaParsing.toInt(event.number).fold(
+      (failure) => emit(NumberTriviaErrorState(_errorMsg(failure))),
+      (number) async {
+        emit(NumberTriviaLoadingState());
+        final response = await concreteNumberTrivia.call(number);
+        response.fold(
+          (failure) => emit(NumberTriviaErrorState(_errorMsg(failure))),
+          (trivia) => emit(NumberTriviaDataState(trivia)),
+        );
+      },
+    );
+  }
+
+  String _errorMsg(Failure failure) {
+    final error = switch (failure.runtimeType) {
+      const (ServerFailure) => SERVER_ERROR,
+      const (CacheFailure) => CACHED_ERROR,
+      const (ParsingFailure) => PARSING_ERROR,
+      Type() => "Undefined error",
+    };
+    return error;
   }
 }
