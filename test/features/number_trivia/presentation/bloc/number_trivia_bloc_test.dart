@@ -97,6 +97,21 @@ void main() {
           verify(mockConcreteUsecase.call(tNumber));
         },
       );
+
+      test(
+        "Get Random trivia -> when cache failure -> NumberTriviaErrorState",
+        () async {
+          when(mockRandomUsecase.call())
+              .thenAnswer((_) async => Left(CacheFailure()));
+
+          bloc.add(const RandomNumberTriviaEvent());
+          expect(bloc.state, NumberTriviaLoadingState());
+          await untilCalled(mockRandomUsecase.call());
+
+          expectLater(bloc.state, const NumberTriviaErrorState(CACHED_ERROR));
+          verify(mockRandomUsecase.call());
+        },
+      );
     },
   );
 }
