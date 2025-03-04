@@ -12,6 +12,10 @@ part 'number_trivia_state.dart';
 
 // ignore: constant_identifier_names
 const PARSING_ERROR = "Parsing error, expected integer";
+// ignore: constant_identifier_names
+const CACHED_ERROR = "Cached error";
+// ignore: constant_identifier_names
+const SERVER_ERROR = "Server error";
 
 class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
   final GetConcreteNumberTrivia concreteNumberTrivia;
@@ -29,9 +33,19 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
     NumberTriviaEvent event,
     Emitter<NumberTriviaState> emit,
   ) {
-    if(event is ConcreteNumberTriviaEvent){
-      numberTriviaParsing.toInt(event.number);
-      emit(const NumberTriviaErrorState(PARSING_ERROR));
+    if (event is ConcreteNumberTriviaEvent) {
+      numberTriviaParsing.toInt(event.number).fold(
+        (failure) {
+          emit(const NumberTriviaErrorState(PARSING_ERROR));
+        },
+        (number) async {
+          final response = await concreteNumberTrivia.call(number);
+          response.fold(
+            (failure) {},
+            (trivia) => emit(NumberTriviaDataState(trivia)),
+          );
+        },
+      );
     }
   }
 }

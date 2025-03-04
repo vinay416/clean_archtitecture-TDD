@@ -43,6 +43,40 @@ void main() {
           verify(mockTriviaParsing.toInt(tNumberString));
         },
       );
+
+      test(
+        "When parsing successful -> NumberTriviaDataState",
+        () async {
+          when(mockTriviaParsing.toInt(any)).thenReturn(const Right(tNumber));
+          when(mockConcreteUsecase.call(any))
+              .thenAnswer((_) async => const Right(trivia));
+
+          bloc.add(const ConcreteNumberTriviaEvent(tNumberString));
+          await untilCalled(mockTriviaParsing.toInt(tNumberString));
+          await untilCalled(mockConcreteUsecase.call(tNumber));
+
+          expectLater(bloc.state, const NumberTriviaDataState(trivia));
+          verify(mockTriviaParsing.toInt(tNumberString));
+          verify(mockConcreteUsecase.call(tNumber));
+        },
+      );
+
+      test(
+        "When parsing successful but server fails -> NumberTriviaErrorState",
+        () async {
+          when(mockTriviaParsing.toInt(any)).thenReturn(const Right(tNumber));
+          when(mockConcreteUsecase.call(any))
+              .thenAnswer((_) async => Left(ServerFailure()));
+
+          bloc.add(const ConcreteNumberTriviaEvent(tNumberString));
+          await untilCalled(mockTriviaParsing.toInt(tNumberString));
+          await untilCalled(mockConcreteUsecase.call(tNumber));
+
+          expectLater(bloc.state, const NumberTriviaErrorState(SERVER_ERROR));
+          verify(mockTriviaParsing.toInt(tNumberString));
+          verify(mockConcreteUsecase.call(tNumber));
+        },
+      );
     },
   );
 }
