@@ -6,7 +6,7 @@ import 'my_network_info.mocks.dart';
 
 void main() {
   final dataCheckerMock = MockMyNetworkInfo();
-  final networkInfo = NetwokInfoImpl(dataCheckerMock);
+  final networkInfo = NetworkInfoImpl(dataCheckerMock);
 
   group(
     "Network Info Impl Test",
@@ -17,7 +17,7 @@ void main() {
           when(dataCheckerMock.hasConnection)
               .thenAnswer((_) => Future.value(true));
 
-          final status = await networkInfo.isConnected();  
+          final status = await networkInfo.isConnected();
           verify(dataCheckerMock.hasConnection);
           expect(status, true);
         },
@@ -29,7 +29,7 @@ void main() {
           when(dataCheckerMock.hasConnection)
               .thenAnswer((_) => Future.value(false));
 
-          final status = await networkInfo.isConnected();  
+          final status = await networkInfo.isConnected();
           verify(dataCheckerMock.hasConnection);
           expect(status, false);
         },
