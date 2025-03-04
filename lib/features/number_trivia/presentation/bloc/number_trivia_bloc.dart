@@ -40,6 +40,7 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
           emit(const NumberTriviaErrorState(PARSING_ERROR));
         },
         (number) async {
+          emit(NumberTriviaLoadingState());
           final response = await concreteNumberTrivia.call(number);
           response.fold(
             (failure) {

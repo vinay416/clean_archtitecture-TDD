@@ -53,6 +53,7 @@ void main() {
 
           bloc.add(const ConcreteNumberTriviaEvent(tNumberString));
           await untilCalled(mockTriviaParsing.toInt(tNumberString));
+          expect(bloc.state, NumberTriviaLoadingState());
           await untilCalled(mockConcreteUsecase.call(tNumber));
 
           expectLater(bloc.state, const NumberTriviaDataState(trivia));
@@ -70,6 +71,7 @@ void main() {
 
           bloc.add(const ConcreteNumberTriviaEvent(tNumberString));
           await untilCalled(mockTriviaParsing.toInt(tNumberString));
+          expect(bloc.state, NumberTriviaLoadingState());
           await untilCalled(mockConcreteUsecase.call(tNumber));
 
           expectLater(bloc.state, const NumberTriviaErrorState(SERVER_ERROR));
@@ -87,6 +89,7 @@ void main() {
 
           bloc.add(const ConcreteNumberTriviaEvent(tNumberString));
           await untilCalled(mockTriviaParsing.toInt(tNumberString));
+          expect(bloc.state, NumberTriviaLoadingState());
           await untilCalled(mockConcreteUsecase.call(tNumber));
 
           expectLater(bloc.state, const NumberTriviaErrorState(CACHED_ERROR));
