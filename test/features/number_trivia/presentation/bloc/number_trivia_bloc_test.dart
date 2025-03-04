@@ -36,10 +36,12 @@ void main() {
         () async {
           when(mockTriviaParsing.toInt(any)).thenReturn(Left(ParsingFailure()));
 
+          const expected = [NumberTriviaErrorState(PARSING_ERROR)];
+          expectLater(bloc.stream, emitsInOrder(expected));
+
           bloc.add(const ConcreteNumberTriviaEvent(tNumberString));
           await untilCalled(mockTriviaParsing.toInt(tNumberString));
 
-          expectLater(bloc.state, const NumberTriviaErrorState(PARSING_ERROR));
           verify(mockTriviaParsing.toInt(tNumberString));
         },
       );
@@ -51,12 +53,16 @@ void main() {
           when(mockConcreteUsecase.call(any))
               .thenAnswer((_) async => const Right(trivia));
 
+          final expected = [
+            NumberTriviaLoadingState(),
+            const NumberTriviaDataState(trivia)
+          ];
+          expectLater(bloc.stream, emitsInOrder(expected));
+
           bloc.add(const ConcreteNumberTriviaEvent(tNumberString));
           await untilCalled(mockTriviaParsing.toInt(tNumberString));
-          expect(bloc.state, NumberTriviaLoadingState());
           await untilCalled(mockConcreteUsecase.call(tNumber));
 
-          expectLater(bloc.state, const NumberTriviaDataState(trivia));
           verify(mockTriviaParsing.toInt(tNumberString));
           verify(mockConcreteUsecase.call(tNumber));
         },
@@ -69,12 +75,16 @@ void main() {
           when(mockConcreteUsecase.call(any))
               .thenAnswer((_) async => Left(ServerFailure()));
 
+          final expected = [
+            NumberTriviaLoadingState(),
+            const NumberTriviaErrorState(SERVER_ERROR)
+          ];
+          expectLater(bloc.stream, emitsInOrder(expected));
+
           bloc.add(const ConcreteNumberTriviaEvent(tNumberString));
           await untilCalled(mockTriviaParsing.toInt(tNumberString));
-          expect(bloc.state, NumberTriviaLoadingState());
           await untilCalled(mockConcreteUsecase.call(tNumber));
 
-          expectLater(bloc.state, const NumberTriviaErrorState(SERVER_ERROR));
           verify(mockTriviaParsing.toInt(tNumberString));
           verify(mockConcreteUsecase.call(tNumber));
         },
@@ -87,12 +97,16 @@ void main() {
           when(mockConcreteUsecase.call(any))
               .thenAnswer((_) async => Left(CacheFailure()));
 
+          final expected = [
+            NumberTriviaLoadingState(),
+            const NumberTriviaErrorState(CACHED_ERROR)
+          ];
+          expectLater(bloc.stream, emitsInOrder(expected));
+
           bloc.add(const ConcreteNumberTriviaEvent(tNumberString));
           await untilCalled(mockTriviaParsing.toInt(tNumberString));
-          expect(bloc.state, NumberTriviaLoadingState());
           await untilCalled(mockConcreteUsecase.call(tNumber));
 
-          expectLater(bloc.state, const NumberTriviaErrorState(CACHED_ERROR));
           verify(mockTriviaParsing.toInt(tNumberString));
           verify(mockConcreteUsecase.call(tNumber));
         },
