@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:clean_architecture/core/errors/failure.dart';
 import 'package:clean_architecture/core/parsing/number_trivia_parsing.dart';
 import 'package:clean_architecture/features/number_trivia/domain/entities/number_triva_entity.dart';
 import 'package:clean_architecture/features/number_trivia/domain/usecases/get_concerete_number_trivia.dart';
@@ -41,7 +42,13 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
         (number) async {
           final response = await concreteNumberTrivia.call(number);
           response.fold(
-            (failure) {},
+            (failure) {
+              if (failure is ServerFailure) {
+                emit(const NumberTriviaErrorState(SERVER_ERROR));
+              } else {
+                
+              }
+            },
             (trivia) => emit(NumberTriviaDataState(trivia)),
           );
         },
