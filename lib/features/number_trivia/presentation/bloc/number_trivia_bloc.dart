@@ -46,7 +46,7 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
               if (failure is ServerFailure) {
                 emit(const NumberTriviaErrorState(SERVER_ERROR));
               } else {
-                
+                emit(const NumberTriviaErrorState(CACHED_ERROR));
               }
             },
             (trivia) => emit(NumberTriviaDataState(trivia)),
