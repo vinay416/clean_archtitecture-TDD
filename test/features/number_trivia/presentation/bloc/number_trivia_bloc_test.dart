@@ -77,6 +77,23 @@ void main() {
           verify(mockConcreteUsecase.call(tNumber));
         },
       );
+
+      test(
+        "When parsing successful but Cache fails -> NumberTriviaErrorState",
+        () async {
+          when(mockTriviaParsing.toInt(any)).thenReturn(const Right(tNumber));
+          when(mockConcreteUsecase.call(any))
+              .thenAnswer((_) async => Left(CacheFailure()));
+
+          bloc.add(const ConcreteNumberTriviaEvent(tNumberString));
+          await untilCalled(mockTriviaParsing.toInt(tNumberString));
+          await untilCalled(mockConcreteUsecase.call(tNumber));
+
+          expectLater(bloc.state, const NumberTriviaErrorState(CACHED_ERROR));
+          verify(mockTriviaParsing.toInt(tNumberString));
+          verify(mockConcreteUsecase.call(tNumber));
+        },
+      );
     },
   );
 }
