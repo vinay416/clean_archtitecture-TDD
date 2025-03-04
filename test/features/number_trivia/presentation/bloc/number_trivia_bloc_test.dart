@@ -116,6 +116,44 @@ void main() {
           verify(mockRandomUsecase.call());
         },
       );
+
+      test(
+        "Get Random trivia -> when server failure -> NumberTriviaErrorState",
+        () async {
+          when(mockRandomUsecase.call())
+              .thenAnswer((_) async => Left(ServerFailure()));
+
+          final expected = [
+            NumberTriviaLoadingState(),
+            const NumberTriviaErrorState(SERVER_ERROR),
+          ];
+          expectLater(bloc.stream, emitsInOrder(expected));
+
+          bloc.add(const RandomNumberTriviaEvent());
+          await untilCalled(mockRandomUsecase.call());
+
+          verify(mockRandomUsecase.call());
+        },
+      );
+
+      test(
+        "Get Random trivia -> Success -> NumberTriviaDataState",
+        () async {
+          when(mockRandomUsecase.call())
+              .thenAnswer((_) async => const Right(trivia));
+
+          final expected = [
+            NumberTriviaLoadingState(),
+            const NumberTriviaDataState(trivia),
+          ];
+          expectLater(bloc.stream, emitsInOrder(expected));
+
+          bloc.add(const RandomNumberTriviaEvent());
+          await untilCalled(mockRandomUsecase.call());
+
+          verify(mockRandomUsecase.call());
+        },
+      );
     },
   );
 }
