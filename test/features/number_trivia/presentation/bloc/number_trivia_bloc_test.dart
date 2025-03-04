@@ -104,11 +104,15 @@ void main() {
           when(mockRandomUsecase.call())
               .thenAnswer((_) async => Left(CacheFailure()));
 
+          final expected = [
+            NumberTriviaLoadingState(),
+            const NumberTriviaErrorState(CACHED_ERROR),
+          ];
+          expectLater(bloc.stream, emitsInOrder(expected));
+
           bloc.add(const RandomNumberTriviaEvent());
-          expect(bloc.state, NumberTriviaLoadingState());
           await untilCalled(mockRandomUsecase.call());
 
-          expectLater(bloc.state, const NumberTriviaErrorState(CACHED_ERROR));
           verify(mockRandomUsecase.call());
         },
       );

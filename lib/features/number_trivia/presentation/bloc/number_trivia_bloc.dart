@@ -37,6 +37,9 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
     if (event is ConcreteNumberTriviaEvent) {
       _onConcreteTriviaEvent(event, emit);
     }
+    if (event is RandomNumberTriviaEvent) {
+      _onRandomTriviaEvent(event, emit);
+    }
   }
 
   void _onConcreteTriviaEvent(
@@ -53,6 +56,18 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
           (trivia) => emit(NumberTriviaDataState(trivia)),
         );
       },
+    );
+  }
+
+  void _onRandomTriviaEvent(
+    RandomNumberTriviaEvent event,
+    Emitter<NumberTriviaState> emit,
+  ) async {
+    emit(NumberTriviaLoadingState());
+    final response = await randomNumberTrivia.call();
+    response.fold(
+      (failure) => emit(NumberTriviaErrorState(_errorMsg(failure))),
+      (trivia) {},
     );
   }
 
