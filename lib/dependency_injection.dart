@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:clean_architecture/core/parsing/number_trivia_parsing.dart';
 import 'package:clean_architecture/core/platform/network_info.dart';
 import 'package:clean_architecture/features/number_trivia/data/data_sources/number_trivia_local_source.dart';
@@ -54,7 +56,11 @@ Future<void> injectDependencies() async {
   //** EXTERNAL
   final prefs = await SharedPreferences.getInstance();
   di.registerLazySingleton<SharedPreferences>(() => prefs);
-  di.registerLazySingleton<Dio>(() => Dio());
+  di.registerLazySingleton<Dio>(
+    () => Dio(
+      BaseOptions(contentType: ContentType.json.value),
+    ),
+  );
   di.registerLazySingleton<InternetConnectionChecker>(
     () => InternetConnectionChecker.instance,
   );

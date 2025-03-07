@@ -33,42 +33,47 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
   FutureOr<void> _onEvent(
     NumberTriviaEvent event,
     Emitter<NumberTriviaState> emit,
-  ) {
+  ) async {
     if (event is ConcreteNumberTriviaEvent) {
-      _onConcreteTriviaEvent(event, emit);
+      await _onConcreteTriviaEvent(event, emit);
     }
     if (event is RandomNumberTriviaEvent) {
-      _onRandomTriviaEvent(event, emit);
+      await _onRandomTriviaEvent(event, emit);
     }
   }
 
-  void _onConcreteTriviaEvent(
+  Future<void> _onConcreteTriviaEvent(
     ConcreteNumberTriviaEvent event,
     Emitter<NumberTriviaState> emit,
-  ) {
-    numberTriviaParsing.toInt(event.number).fold(
-      (failure) => emit(NumberTriviaErrorState(_errorMsg(failure))),
-      (number) async {
-        emit(NumberTriviaLoadingState());
-        final response = await concreteNumberTrivia.call(number);
-        response.fold(
-          (failure) => emit(NumberTriviaErrorState(_errorMsg(failure))),
-          (trivia) => emit(NumberTriviaDataState(trivia)),
+  ) async {
+    final errorOrNumber = numberTriviaParsing.toInt(event.number).fold(
+          (failure) => NumberTriviaErrorState(_errorMsg(failure)),
+          (number) => number,
         );
-      },
+    if (errorOrNumber is NumberTriviaErrorState) {
+      emit(errorOrNumber);
+      return;
+    }
+    final number = errorOrNumber as int;
+    emit(NumberTriviaLoadingState());
+    final response = await concreteNumberTrivia.call(number);
+    response.fold(
+      (failure) => emit(NumberTriviaErrorState(_errorMsg(failure))),
+      (trivia) => emit(NumberTriviaDataState(trivia)),
     );
   }
 
-  void _onRandomTriviaEvent(
+  Future<void> _onRandomTriviaEvent(
     RandomNumberTriviaEvent event,
     Emitter<NumberTriviaState> emit,
   ) async {
     emit(NumberTriviaLoadingState());
     final response = await randomNumberTrivia.call();
-    response.fold(
-      (failure) => emit(NumberTriviaErrorState(_errorMsg(failure))),
-      (trivia) => emit(NumberTriviaDataState(trivia)),
+    final state = response.fold(
+      (failure) => NumberTriviaErrorState(_errorMsg(failure)),
+      (trivia) => NumberTriviaDataState(trivia),
     );
+    emit(state);
   }
 
   String _errorMsg(Failure failure) {

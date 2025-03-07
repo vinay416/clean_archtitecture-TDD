@@ -1,7 +1,10 @@
 import 'package:clean_architecture/dependency_injection.dart';
 import 'package:flutter/material.dart';
 
+import 'features/number_trivia/presentation/pages/home_screen.dart';
+
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await injectDependencies();
   runApp(const MainApp());
 }
@@ -12,11 +15,8 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+      debugShowCheckedModeBanner: false,
+      home: HomeScreen(),
     );
   }
 }
