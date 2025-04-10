@@ -1,0 +1,2 @@
+/Users/vinaysharma/Developer/flutter_projects/clean_architecture/android/app/.cxx/RelWithDebInfo/6t4i5w6a/x86_64/CMakeFiles/edit_cache.dir
+/Users/vinaysharma/Developer/flutter_projects/clean_architecture/android/app/.cxx/RelWithDebInfo/6t4i5w6a/x86_64/CMakeFiles/rebuild_cache.dir
