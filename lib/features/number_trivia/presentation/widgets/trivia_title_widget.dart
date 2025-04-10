@@ -12,22 +12,24 @@ class TriviaTitleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Center(
-        child: BlocBuilder<NumberTriviaBloc, NumberTriviaState>(
-          builder: (context, state) {
-            if (state is NumberTriviaLoadingState) {
-              return buildLoading();
-            } else if (state is NumberTriviaErrorState) {
-              return buildError(state.message);
-            } else if (state is NumberTriviaDataState) {
-              return buildTrivia(state.numberTriva);
-            } else {
-              return const Text(
-                "Search with a number\nor\nTap on random",
-                style: kTitleTextStyle,
-                textAlign: TextAlign.center,
-              );
-            }
-          },
+        child: SingleChildScrollView(
+          child: BlocBuilder<NumberTriviaBloc, NumberTriviaState>(
+            builder: (context, state) {
+              if (state is NumberTriviaLoadingState) {
+                return buildLoading();
+              } else if (state is NumberTriviaErrorState) {
+                return buildError(state.message);
+              } else if (state is NumberTriviaDataState) {
+                return buildTrivia(state.numberTriva);
+              } else {
+                return const Text(
+                  "Search with a number\nor\nTap on random",
+                  style: kTitleTextStyle,
+                  textAlign: TextAlign.center,
+                );
+              }
+            },
+          ),
         ),
       ),
     );

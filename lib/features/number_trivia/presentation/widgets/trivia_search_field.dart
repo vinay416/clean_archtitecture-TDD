@@ -85,6 +85,7 @@ class _TriviaSearchFieldState extends State<TriviaSearchField> {
   }
 
   void onSearchTap() {
+    FocusScope.of(context).unfocus();
     final bool isValid = formKey.currentState?.validate() ?? false;
     if (isValid) {
       final numberString = textController.text.trim();
